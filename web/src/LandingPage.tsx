@@ -151,7 +151,7 @@ useEffect(() => {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '80px 60px',
-    gap: '140px'
+    gap: '80px'
   }}
 >
 
@@ -532,6 +532,85 @@ useEffect(() => {
         opacity: 0.6;
       }
     }
+      /* ================= RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+  nav {
+    padding: 10px 30px !important;
+  }
+
+  section {
+    padding: 60px 30px !important;
+    gap: 60px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column !important;
+    gap: 20px !important;
+    text-align: center;
+  }
+
+  nav img {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  nav h1 {
+    font-size: 26px !important;
+  }
+
+  /* HERO SECTION */
+  section {
+    flex-direction: column !important;
+    padding: 40px 20px !important;
+    gap: 40px !important;
+  }
+
+  section > div {
+    max-width: 100% !important;
+  }
+
+  h1 {
+    font-size: 32px !important;
+    text-align: center;
+  }
+
+  p {
+    font-size: 16px !important;
+    text-align: center;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  /* IMAGE */
+  img[alt="Community"] {
+    width: 100% !important;
+    max-width: 360px !important;
+  }
+
+  div[style*="width: 520px"] {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 26px !important;
+  }
+
+  p {
+    font-size: 15px !important;
+  }
+
+  nav button {
+    font-size: 16px !important;
+  }
+}
   `}
 </style>
 
