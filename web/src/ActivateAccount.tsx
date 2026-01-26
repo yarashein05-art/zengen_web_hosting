@@ -103,24 +103,27 @@ function ActivateAccount() {
   /* ================= UI ================= */
 
   return (
-    <section
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: '#FFDBFF',
-      }}
-    >
+   <section
+  style={{
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#FFDBFF',
+    padding: '20px',
+  }}
+>
       <div
-        style={{
-          width: 420,
-          padding: 32,
-          borderRadius: 20,
-          background: '#fff',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
-        }}
-      >
+  style={{
+    width: '100%',
+    maxWidth: 420,
+    padding: 32,
+    borderRadius: 20,
+    background: '#fff',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+    margin: '0 16px',
+  }}
+>
         <h2 style={{ color: '#008C33', marginBottom: 8 }}>
           Activate your account
         </h2>
@@ -135,7 +138,12 @@ function ActivateAccount() {
             placeholder="Create password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: 14 }}
+           style={{
+  width: '100%',
+  padding: 14,
+  borderRadius: 10,
+  fontSize: 16,
+}}
           />
           <span
             style={{
@@ -156,7 +164,12 @@ function ActivateAccount() {
             placeholder="Confirm password"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            style={{ width: '100%', padding: 14 }}
+           style={{
+  width: '100%',
+  padding: 14,
+  borderRadius: 10,
+  fontSize: 16,
+}}
           />
           <span
             style={{
@@ -196,5 +209,22 @@ function ActivateAccount() {
     </section>
   );
 }
+<style>
+{`
+@media (max-width: 480px) {
+  h2 {
+    font-size: 22px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+
+  button {
+    font-size: 15px !important;
+  }
+}
+`}
+</style>
 
 export default ActivateAccount;

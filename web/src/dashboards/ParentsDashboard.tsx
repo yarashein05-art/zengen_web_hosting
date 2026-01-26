@@ -260,20 +260,31 @@ useEffect(() => {
       }}
     >
       {/* ================= NAVBAR ================= */}
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 60px',
-        }}
-      >
+     <nav
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px 60px',
+    flexWrap: 'wrap',
+    gap: 16,
+  }}
+>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <img src={avatarIcon} style={{ width: 90 }} />
           <h1 style={{ margin: 0, fontWeight: 700 }}>Parents Dashboard</h1>
         </div>
 
-        <div style={{ display: 'flex', gap: 18, fontSize: 18, fontWeight: 600 }}>
+        <div
+  style={{
+    display: 'flex',
+    gap: 14,
+    fontSize: 16,
+    fontWeight: 600,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }}
+>
           <NavTab active={tab === 'overview'} onClick={() => setTab('overview')}>
             👶 Child Overview
           </NavTab>
@@ -325,7 +336,13 @@ useEffect(() => {
       </nav>
 
       {/* ================= CONTENT ================= */}
-      <section style={{ display: 'flex', justifyContent: 'center', padding: 60 }}>
+     <section
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '60px 40px',
+  }}
+>
         {tab === 'alerts' && (
           <div style={{ width: '100%', maxWidth: 900 }}>
             {alertsLoading && <p>Loading alerts...</p>}
@@ -360,7 +377,14 @@ useEffect(() => {
           {new Date(item.created_at).toLocaleString()}
         </p>
 
-        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+        <div
+  style={{
+    display: 'flex',
+    gap: 12,
+    marginTop: 16,
+    flexWrap: 'wrap',
+  }}
+>
          {!isPaymentAlert && (
   <button
     style={{ ...primaryBtn, background: '#3498db' }}
@@ -448,5 +472,64 @@ const primaryBtn = {
   fontWeight: 800,
   cursor: 'pointer',
 };
+<style>
+{`
+/* ========== PARENTS DASHBOARD RESPONSIVE ========== */
 
+@media (max-width: 1024px) {
+  nav {
+    padding: 16px 30px !important;
+  }
+
+  section {
+    padding: 40px 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  nav h1 {
+    font-size: 24px !important;
+  }
+
+  nav img {
+    width: 70px !important;
+  }
+
+  section {
+    padding: 30px 20px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 20px 14px !important;
+  }
+
+  h1 {
+    font-size: 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+}
+`}
+</style>
 export default ParentsDashboard;

@@ -79,15 +79,23 @@ function CounselorAttendance() {
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div
+  style={{
+    maxWidth: 900,
+    margin: '0 auto',
+    padding: '0 16px',
+  }}
+>
       <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 24,
-        }}
-      >
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+    flexWrap: 'wrap',
+    gap: 12,
+  }}
+>
         <h1>Session Attendance</h1>
 
         {/* ✅ NEW: manual refresh (does not change logic) */}
@@ -111,15 +119,16 @@ function CounselorAttendance() {
 
       {sessions.map((session) => (
         <div
-          key={session.id}
-          style={{
-            background: '#fff',
-            borderRadius: 24,
-            padding: 24,
-            marginBottom: 32,
-            boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
-          }}
-        >
+  key={session.id}
+  style={{
+    background: '#fff',
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
+    boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+    overflowWrap: 'break-word',
+  }}
+>
           <h3 style={{ marginBottom: 8 }}>{session.topic}</h3>
 
           {/* ✅ NEW: attendee count (derived, no DB change) */}
@@ -130,9 +139,20 @@ function CounselorAttendance() {
           {session.session_attendance.length === 0 ? (
             <p style={{ color: '#888' }}>No attendees.</p>
           ) : (
-            <ul style={{ paddingLeft: 20 }}>
+           <ul
+  style={{
+    paddingLeft: 18,
+    marginBottom: 0,
+  }}
+>
               {session.session_attendance.map((a) => (
-                <li key={a.id} style={{ marginBottom: 8 }}>
+               <li
+  key={a.id}
+  style={{
+    marginBottom: 8,
+    fontSize: 15,
+  }}
+>
                   {a.users?.name ?? 'Unknown user'}
                 </li>
               ))}
@@ -143,5 +163,22 @@ function CounselorAttendance() {
     </div>
   );
 }
+<style>
+{`
+@media (max-width: 480px) {
+  h1 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  button {
+    font-size: 14px !important;
+  }
+}
+`}
+</style>
 
 export default CounselorAttendance;

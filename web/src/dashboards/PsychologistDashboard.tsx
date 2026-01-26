@@ -1091,20 +1091,30 @@ const closedCases = cases.filter(c => c.status === 'closed');
       }}
     >
       {/* ================= NAVBAR ================= */}
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 60px',
-        }}
-      >
+     <nav
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px 60px',
+    flexWrap: 'wrap',
+    gap: 16,
+  }}
+>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <img src={avatarIcon} style={{ width: 90 }} />
           <h1 style={{ margin: 0, fontWeight: 700 }}>Psychologist Dashboard</h1>
         </div>
-
-        <div style={{ display: 'flex', gap: 18, fontSize: 18, fontWeight: 600 }}>
+<div
+  style={{
+    display: 'flex',
+    gap: 14,
+    fontSize: 16,
+    fontWeight: 600,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }}
+>
           <NavTab active={tab === 'risk'} onClick={() => setTab('risk')}>
             🚨 Risk Queue
           </NavTab>
@@ -1163,10 +1173,23 @@ const closedCases = cases.filter(c => c.status === 'closed');
       </nav>
 
       {/* ================= CONTENT ================= */}
-      <section style={{ display: 'flex', justifyContent: 'center', padding: 60 }}>
-        {/* ================= RISK QUEUE ================= */}
+      <section
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '60px 40px',
+  }}
+>        {/* ================= RISK QUEUE ================= */}
         {tab === 'risk' && (
-          <div style={{ width: '100%', maxWidth: 1200, display: 'flex', gap: 18 }}>
+          <div
+  style={{
+    width: '100%',
+    maxWidth: 1200,
+    display: 'flex',
+    gap: 18,
+    flexWrap: 'wrap',
+  }}
+>
             {/* LEFT: QUEUE */}
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1216,7 +1239,12 @@ const closedCases = cases.filter(c => c.status === 'closed');
             </div>
 
             {/* RIGHT: CHAT VIEW */}
-            <div style={{ flex: '0 0 460px' }}>
+          <div
+  style={{
+    flex: '0 0 460px',
+    width: '100%',
+  }}
+>
               <div
                 style={{
                   background: '#fff',
@@ -1410,7 +1438,7 @@ const closedCases = cases.filter(c => c.status === 'closed');
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))',
+       gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gap: 32,
         paddingTop: 20,
         animation: 'fadeIn 0.4s ease',
@@ -1772,7 +1800,7 @@ const closedCases = cases.filter(c => c.status === 'closed');
         <div
   style={{
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(460px, 1fr))',
+   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
     gap: 28,
     width: '100%',          // ✅ REQUIRED
     alignItems: 'stretch',
@@ -2201,12 +2229,13 @@ const closedCases = cases.filter(c => c.status === 'closed');
       zIndex: 999,
     }}
   >
-    <div
+   <div
   style={{
     background: '#fff',
     borderRadius: 28,
     padding: '36px 40px',
-    width: 520,
+    width: '90%',
+    maxWidth: 520,
     boxShadow: '0 30px 80px rgba(0,0,0,0.35)',
     animation: 'fadeInScale 0.25s ease',
   }}
@@ -2512,5 +2541,64 @@ const labelStyle = {
   fontWeight: 500,
 };
 
+<style>
+{`
+/* ========== PSYCHOLOGIST DASHBOARD RESPONSIVE ========== */
 
+@media (max-width: 1024px) {
+  nav {
+    padding: 16px 30px !important;
+  }
+
+  section {
+    padding: 40px 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  nav img {
+    width: 70px !important;
+  }
+
+  nav h1 {
+    font-size: 24px !important;
+  }
+
+  section {
+    padding: 30px 20px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 20px 14px !important;
+  }
+
+  h1 {
+    font-size: 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+}
+`}
+</style>
 export default PsychologistDashboard;

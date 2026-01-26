@@ -373,20 +373,30 @@ const payload = {
     >
       {/* NAVBAR */}
       <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 60px',
-        }}
-      >
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px 60px',
+    flexWrap: 'wrap',
+    gap: 16,
+  }}
+>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <img src={avatarIcon} style={{ width: 90 }} />
           <h1 style={{ margin: 0, fontWeight: 700 }}>Counselor Dashboard</h1>
         </div>
 
-        <div style={{ display: 'flex', gap: 18, fontSize: 18, fontWeight: 600 }}>
-          <NavTab active={tab === 'schedule'} onClick={() => setTab('schedule')}>
+        <div
+  style={{
+    display: 'flex',
+    gap: 14,
+    fontSize: 16,
+    fontWeight: 600,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }}
+>          <NavTab active={tab === 'schedule'} onClick={() => setTab('schedule')}>
             Schedule
           </NavTab>
         <NavTab active={tab === 'attendance'} onClick={() => setTab('attendance')}>
@@ -432,17 +442,20 @@ const payload = {
   {/* ================= SCHEDULE TAB ================= */}
   {tab === 'schedule' && (
     <div
-      style={{
-        maxWidth: 1320,
-        display: 'flex',
-        gap: 24,
-        margin: '0 auto',
-      }}
-    >
+  style={{
+    maxWidth: 1320,
+    display: 'flex',
+    gap: 24,
+    margin: '0 auto',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }}
+>
       {/* FORM */}
       <div
         style={{
-          flex: '0 0 480px',
+          flex: '1 1 420px',
+maxWidth: '100%',
           backgroundColor: 'rgba(255,255,255,0.65)',
           borderRadius: 28,
           padding: 48,
@@ -479,7 +492,8 @@ const payload = {
       {upcoming && (
   <div
     style={{
-      flex: '0 0 320px',
+      flex: '1 1 280px',
+maxWidth: '100%',
       background: '#fff',
       borderRadius: 24,
       padding: 24,
@@ -546,7 +560,8 @@ const payload = {
       {completedSessions.length > 0 && (
         <div
           style={{
-            flex: '0 0 340px',
+            flex: '1 1 300px',
+maxWidth: '100%',
             background: '#fff',
             borderRadius: 24,
             padding: 24,
@@ -672,5 +687,65 @@ const primaryBtnStyle = (disabled: boolean) => ({
   cursor: disabled ? 'not-allowed' : 'pointer',
   opacity: disabled ? 0.7 : 1,
 });
+<style>
+{`
+/* ========== COUNSELOR DASHBOARD RESPONSIVE ========== */
+
+@media (max-width: 1024px) {
+  nav {
+    padding: 16px 30px !important;
+  }
+
+  section {
+    padding: 40px 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  nav h1 {
+    font-size: 24px !important;
+  }
+
+  nav img {
+    width: 70px !important;
+  }
+
+  section {
+    padding: 30px 20px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  textarea {
+    min-height: 80px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 20px 14px !important;
+  }
+
+  h1 {
+    font-size: 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+}
+`}
+</style>
 
 export default CounselorDashboard;
