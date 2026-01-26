@@ -422,14 +422,16 @@ const reviewRate =
       }}
     >
       {/* ================= NAVBAR ================= */}
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 60px'
-        }}
-      >
+     <nav
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px 60px',
+    flexWrap: 'wrap',
+    gap: '16px'
+  }}
+>
         {/* LOGO */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <img
@@ -444,9 +446,11 @@ const reviewRate =
        <div
   style={{
     display: 'flex',
-    gap: 22,
-    fontSize: '18px',
+    gap: 16,
+    fontSize: '16px',
     fontWeight: 600,
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   }}
 >
   <span
@@ -1088,7 +1092,7 @@ const reviewRate =
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
         gap: 24,
       }}
     >
@@ -1373,5 +1377,80 @@ const inputStyle = {
   outline: 'none',
   boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
 };
+<style>
+{`
+/* ========== ADMIN DASHBOARD RESPONSIVE ========== */
 
+@media (max-width: 1024px) {
+  nav {
+    padding: 16px 30px !important;
+  }
+
+  section {
+    padding: 40px 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  nav img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  nav h1 {
+    font-size: 24px !important;
+  }
+
+  section {
+    padding: 30px 20px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  /* Cards & graphs */
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Case cards */
+  div[style*="minHeight: 420"] {
+    min-height: auto !important;
+  }
+
+  /* User cards */
+  div[style*="padding: 30"] {
+    padding: 22px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  nav h1 {
+    font-size: 20px !important;
+  }
+
+  section {
+    padding: 20px 14px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+}
+`}
+</style>
 export default AdminDashboard;

@@ -222,7 +222,7 @@ console.log('PROFILE ERROR:', profileError);
   return (
     <section
       style={{
-        minHeight: 'calc(100vh - 120px)',
+        minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -429,5 +429,69 @@ const errorStyle = {
   marginBottom: '12px'
 };
 
+<style>
+{`
+/* ================= LOGIN RESPONSIVE ================= */
 
+@media (max-width: 768px) {
+  section {
+    padding: 20px !important;
+  }
+
+  section > div {
+    padding: 32px !important;
+    border-radius: 22px !important;
+  }
+
+  h2 {
+    font-size: 24px !important;
+  }
+
+  img[alt="Sign In"] {
+    width: 90px !important;
+    height: 110px !important;
+  }
+
+  input {
+    font-size: 15px !important;
+    padding: 14px !important;
+  }
+
+  button {
+    font-size: 15px !important;
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 14px !important;
+  }
+
+  section > div {
+    padding: 24px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  label {
+    font-size: 14px !important;
+  }
+
+  input {
+    font-size: 14px !important;
+  }
+
+  button {
+    font-size: 14px !important;
+  }
+
+  span {
+    font-size: 13px !important;
+  }
+}
+`}
+</style>
 export default Login;

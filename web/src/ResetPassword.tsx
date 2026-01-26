@@ -79,14 +79,15 @@ function ResetPassword() {
       }}
     >
       <div
-        style={{
-          width: 420,
-          padding: 32,
-          borderRadius: 20,
-          background: '#FFFFFF',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.1)',
-        }}
-      >
+  style={{
+    width: '100%',
+    maxWidth: 420,
+    padding: 32,
+    borderRadius: 20,
+    background: '#FFFFFF',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.1)',
+  }}
+>
         <h2 style={{ color: '#008C33', marginBottom: 6 }}>
           Create a strong password
         </h2>
@@ -150,5 +151,59 @@ function ResetPassword() {
     </section>
   );
 }
+<style>
+{`
+/* ========== RESET PASSWORD RESPONSIVE ========== */
 
+@media (max-width: 768px) {
+  section {
+    padding: 20px !important;
+  }
+
+  section > div {
+    padding: 26px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  p {
+    font-size: 15px !important;
+  }
+
+  input {
+    padding: 12px !important;
+    font-size: 15px !important;
+  }
+
+  button {
+    padding: 12px !important;
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section > div {
+    padding: 22px !important;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+
+  input {
+    font-size: 14px !important;
+  }
+
+  button {
+    font-size: 14px !important;
+  }
+}
+`}
+</style>
 export default ResetPassword;
