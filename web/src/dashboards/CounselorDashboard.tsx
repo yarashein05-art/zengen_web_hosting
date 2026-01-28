@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import avatarIcon from '../assets/avatar.png';
+import avatarIcon from '../assets/counselor.png';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import CounselorAttendance from '../CounselorAttendance';
