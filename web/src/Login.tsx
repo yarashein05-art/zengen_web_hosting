@@ -15,66 +15,13 @@ function Login() {
 
 const navigate = useNavigate();
 
-useEffect(() => {
-  const { data: listener } = supabase.auth.onAuthStateChange(
-    async (event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const user = session.user;
-
-        try {
-          // 🔍 Check if user exists in web_users
-          const { data: profile, error } = await supabase
-            .from('web_users')
-            .select('role')
-            .eq('id', user.id)
-            .single();
-
-          if (error || !profile) {
-            setError(
-              'This account is not authorized. Please contact the administrator.'
-            );
-
-            // Optional: sign out unauthorized user
-            await supabase.auth.signOut();
-            return;
-          }
-
-          // 🚀 Redirect based on role
-          switch (profile.role) {
-            case 'admin':
-              navigate('/admin');
-              break;
-            case 'parent':
-              navigate('/parent');
-              break;
-            case 'counselor':
-              navigate('/counselor');
-              break;
-            case 'psychologist':
-              navigate('/psychologist');
-              break;
-            default:
-              setError('User role not assigned');
-              await supabase.auth.signOut();
-          }
-        } catch (err) {
-          setError('Something went wrong during Google login');
-        }
-      }
-    }
-  );
-
-  return () => {
-    listener.subscription.unsubscribe();
-  };
-}, []);
 
 const signInWithGoogle = async () => {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:5173/login',
+       redirectTo: 'https://zengen-web-hosting-wm66.vercel.app/login'
       },
     });
 
@@ -114,7 +61,7 @@ const startEmailPasswordReset = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(
       email.trim().toLowerCase(),
       {
-        redirectTo: 'http://localhost:5173/reset-password',
+       redirectTo: 'https://zengen-web-hosting-wm66.vercel.app/reset-password'
       }
     );
 

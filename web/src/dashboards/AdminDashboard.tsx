@@ -4,6 +4,17 @@ import { supabase } from '../supabaseClient'; // ✅ ADD THIS
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
+
+type ContactMessage = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+};
+
 function AdminDashboard() {
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -26,6 +37,8 @@ const [sessionsByCase, setSessionsByCase] = useState<Record<
 const filteredChildren = children.filter((c) =>
   c.name.toLowerCase().includes(childSearch.toLowerCase())
 );
+const [messages, setMessages] = useState<ContactMessage[]>([]);
+const unreadMessagesCount = messages.filter(m => !m.is_read).length;
 const [userStatus, setUserStatus] = useState(0);
 const [userCards, setUserCards] = useState({
   users: 0,
@@ -41,7 +54,7 @@ const [accountability, setAccountability] = useState({
   highRisk: 0,
 });
 const [activeTab, setActiveTab] =
-  useState<'invite' | 'analytics' | 'counselors' | 'users'>('invite');
+  useState<'invite' | 'analytics' | 'counselors' | 'users' | 'messages'>('invite');
   const [flaggedCases, setFlaggedCases] = useState<any[]>([]);
 const [analytics, setAnalytics] = useState({
   teens: 0,
@@ -67,6 +80,36 @@ const [counselorAccountability, setCounselorAccountability] = useState({
   average_attendance: 0,
   overall_attendance_rate: 0,
 });
+const fetchContactMessages = async () => {
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (!error && data) setMessages(data);
+};
+useEffect(() => {
+  fetchContactMessages();
+
+  const channel = supabase
+    .channel('admin-contact-messages')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'contact_messages',
+      },
+      () => {
+        fetchContactMessages(); // ⚡ instant update
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
 useEffect(() => {
   if (activeTab !== 'counselors') return;
 
@@ -490,7 +533,30 @@ const reviewRate =
 >
   👤 User Monitoring
 </span>
-
+<span
+  style={{
+    cursor: 'pointer',
+    borderBottom: activeTab === 'messages' ? '3px solid #008C33' : 'none',
+  }}
+  onClick={() => setActiveTab('messages')}
+>
+  🔔 Messages
+  {unreadMessagesCount > 0 && (
+    <span
+      style={{
+        backgroundColor: '#e74c3c',
+        color: '#fff',
+        borderRadius: '50%',
+        padding: '2px 7px',
+        fontSize: 12,
+        fontWeight: 700,
+        marginLeft: 8,
+      }}
+    >
+      {unreadMessagesCount}
+    </span>
+  )}
+</span>
   <span
     onClick={handleLogout}
     style={{
@@ -1272,7 +1338,62 @@ color:
     </div>
   </section>
 )}
+{activeTab === 'messages' && (
+  <section style={{ padding: '60px', maxWidth: 900, margin: '0 auto' }}>
+    <h2>📨 Contact Messages</h2>
 
+    {messages.length === 0 && <p>No messages yet.</p>}
+
+    {messages.map((m) => (
+      <div
+        key={m.id}
+        style={{
+          background: '#fff',
+          padding: 24,
+          borderRadius: 22,
+          marginBottom: 18,
+          boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+          opacity: m.is_read ? 0.55 : 1,
+          transition: 'opacity 0.3s ease',
+          cursor: 'pointer',
+        }}
+        onClick={async () => {
+          // 🔹 optimistic UI
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === m.id ? { ...msg, is_read: true } : msg
+            )
+          );
+
+          // 🔹 persist read
+          await supabase
+            .from('contact_messages')
+            .update({ is_read: true })
+            .eq('id', m.id);
+
+          // 🔹 redirect admin
+          setActiveTab('invite');
+        }}
+      >
+        <h4 style={{ margin: 0 }}>
+          {m.name} ({m.role})
+        </h4>
+
+        <p style={{ fontSize: 13, opacity: 0.7 }}>
+          {m.email}
+        </p>
+
+        <p style={{ marginTop: 12, whiteSpace: 'pre-wrap' }}>
+          {m.message}
+        </p>
+
+        <p style={{ fontSize: 12, opacity: 0.6, marginTop: 10 }}>
+          {new Date(m.created_at).toLocaleString()}
+        </p>
+      </div>
+    ))}
+  </section>
+)}
 </div>
 );
 }
