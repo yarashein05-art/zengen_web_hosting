@@ -14,19 +14,6 @@ function ActivateAccount() {
   /* ================= ACCESS CONTROL ================= */
 
   useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session) {
-        navigate('/login');
-      }
-    };
-
-    checkSession();
-  }, [navigate]);
-useEffect(() => {
   const exchange = async () => {
     const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
 
