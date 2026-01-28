@@ -14,17 +14,18 @@ function ActivateAccount() {
   /* ================= ACCESS CONTROL ================= */
 
   useEffect(() => {
-  const exchange = async () => {
-    const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-    if (error) {
-      console.log("exchangeCodeForSession error:", error.message);
-      setError("Invalid or expired activation link.");
-    }
-  };
+      if (!session) {
+        navigate('/login');
+      }
+    };
 
-  exchange();
-}, []);
+    checkSession();
+  }, [navigate]);
 
   /* ================= ACTIVATE ACCOUNT ================= */
 
