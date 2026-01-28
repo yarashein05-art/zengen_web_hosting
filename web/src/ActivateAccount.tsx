@@ -38,6 +38,7 @@ useEffect(() => {
 
   exchange();
 }, []);
+
   /* ================= ACTIVATE ACCOUNT ================= */
 
   const activateAccount = async () => {
