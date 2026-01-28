@@ -26,7 +26,18 @@ function ActivateAccount() {
 
     checkSession();
   }, [navigate]);
+useEffect(() => {
+  const exchange = async () => {
+    const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
 
+    if (error) {
+      console.log("exchangeCodeForSession error:", error.message);
+      setError("Invalid or expired activation link.");
+    }
+  };
+
+  exchange();
+}, []);
   /* ================= ACTIVATE ACCOUNT ================= */
 
   const activateAccount = async () => {
