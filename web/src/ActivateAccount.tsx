@@ -13,19 +13,23 @@ function ActivateAccount() {
 
   /* ================= ACCESS CONTROL ================= */
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+ useEffect(() => {
+  const exchangeInviteLink = async () => {
+    // This converts the invite link code into a session
+    const { error } = await supabase.auth.exchangeCodeForSession(
+      window.location.href
+    );
 
-      if (!session) {
-        navigate('/login');
-      }
-    };
+    if (error) {
+      console.log("❌ exchangeCodeForSession error:", error.message);
+      setError("Activation link is invalid or expired. Please request a new invite.");
+    } else {
+      console.log("✅ exchangeCodeForSession success");
+    }
+  };
 
-    checkSession();
-  }, [navigate]);
+  exchangeInviteLink();
+}, []);
 
   /* ================= ACTIVATE ACCOUNT ================= */
 
