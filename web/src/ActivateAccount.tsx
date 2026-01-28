@@ -19,51 +19,57 @@ function ActivateAccount() {
   // - There is NO session yet until we exchange that code.
   // - Do not redirect away just because `getSession()` is initially null.
   useEffect(() => {
-    let cancelled = false;
+  let cancelled = false;
 
-    const bootstrapSession = async () => {
-      setError('');
-      setExchanging(true);
+  const bootstrapSession = async () => {
+    setError('');
+    setExchanging(true);
 
-      try {
-        // If there is already a session, we can proceed without exchanging.
-        const {
-          data: { session: existingSession },
-        } = await supabase.auth.getSession();
+    try {
+      // 1) Check if session already exists
+      const {
+        data: { session: existingSession },
+      } = await supabase.auth.getSession();
 
-        if (existingSession) return;
+      if (existingSession) return;
 
-        // Exchange the invite link's code for a session.
+      // 2) If URL has ?code= then exchange it
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get('code');
+
+      if (code) {
         const { error: exchangeError } =
           await supabase.auth.exchangeCodeForSession(window.location.href);
 
-        if (exchangeError) {
-          throw exchangeError;
-        }
-
-        // Confirm we now have a session.
-        const {
-          data: { session: newSession },
-        } = await supabase.auth.getSession();
-
-        if (!newSession) {
-          throw new Error('Activation link invalid or expired');
-        }
-      } catch (e: any) {
-        if (!cancelled) {
-          setError(e?.message || 'Activation link invalid or expired');
-        }
-      } finally {
-        if (!cancelled) setExchanging(false);
+        if (exchangeError) throw exchangeError;
       }
-    };
 
-    bootstrapSession();
+      // 3) Wait a little for session to be stored (important)
+      await new Promise((r) => setTimeout(r, 300));
 
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+      // 4) Confirm session exists now
+      const {
+        data: { session: newSession },
+      } = await supabase.auth.getSession();
+
+      if (!newSession) {
+        throw new Error('Activation link invalid or expired. Please request a new invite.');
+      }
+    } catch (e: any) {
+      if (!cancelled) {
+        setError(e?.message || 'Activation link invalid or expired');
+      }
+    } finally {
+      if (!cancelled) setExchanging(false);
+    }
+  };
+
+  bootstrapSession();
+
+  return () => {
+    cancelled = true;
+  };
+}, []);
 
   /* ================= ACTIVATE ACCOUNT ================= */
 
