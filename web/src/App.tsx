@@ -18,7 +18,10 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/activateaccount" element={<ActivateAccount />} />
+      {/* Supabase invite / activation */}
+      <Route path="/activate-account" element={<ActivateAccount />} />
+      {/* Backwards-compatible alias (older links) */}
+      <Route path="/activateaccount" element={<Navigate to="/activate-account" replace />} />
       <Route path="/counselor/attendance" element={<CounselorAttendance />}/>
 
 

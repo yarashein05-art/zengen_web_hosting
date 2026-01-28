@@ -6,26 +6,64 @@ function ActivateAccount() {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [exchanging, setExchanging] = useState(true);
   const [error, setError] = useState('');
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
 
-  /* ================= ACCESS CONTROL ================= */
+  /* ================= INVITE LINK EXCHANGE ================= */
 
+  // IMPORTANT:
+  // - Invite links land here with a `code` in the URL.
+  // - There is NO session yet until we exchange that code.
+  // - Do not redirect away just because `getSession()` is initially null.
   useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    let cancelled = false;
 
-      if (!session) {
-        navigate('/login');
+    const bootstrapSession = async () => {
+      setError('');
+      setExchanging(true);
+
+      try {
+        // If there is already a session, we can proceed without exchanging.
+        const {
+          data: { session: existingSession },
+        } = await supabase.auth.getSession();
+
+        if (existingSession) return;
+
+        // Exchange the invite link's code for a session.
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession(window.location.href);
+
+        if (exchangeError) {
+          throw exchangeError;
+        }
+
+        // Confirm we now have a session.
+        const {
+          data: { session: newSession },
+        } = await supabase.auth.getSession();
+
+        if (!newSession) {
+          throw new Error('Activation link invalid or expired');
+        }
+      } catch (e: any) {
+        if (!cancelled) {
+          setError(e?.message || 'Activation link invalid or expired');
+        }
+      } finally {
+        if (!cancelled) setExchanging(false);
       }
     };
 
-    checkSession();
-  }, [navigate]);
+    bootstrapSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   /* ================= ACTIVATE ACCOUNT ================= */
 
@@ -42,9 +80,22 @@ function ActivateAccount() {
       return;
     }
 
+    if (exchanging) return;
+
     setLoading(true);
 
     try {
+      // Ensure we have a session before trying to update the user.
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        setError('Activation link invalid or expired');
+        setLoading(false);
+        return;
+      }
+
       // 1️⃣ Set password
       const { error: passwordError } = await supabase.auth.updateUser({
         password: password.trim(),
@@ -132,6 +183,12 @@ function ActivateAccount() {
           Create a password to complete your ZenGen account.
         </p>
 
+        {exchanging && !error && (
+          <p style={{ marginBottom: 12 }}>
+            Validating your invite link…
+          </p>
+        )}
+
         <div style={{ position: 'relative', marginBottom: 14 }}>
           <input
             type={showPass ? 'text' : 'password'}
@@ -190,7 +247,7 @@ function ActivateAccount() {
 
         <button
           onClick={activateAccount}
-          disabled={loading}
+          disabled={loading || exchanging || !!error}
           style={{
             width: '100%',
             padding: 14,
@@ -203,7 +260,7 @@ function ActivateAccount() {
             opacity: loading ? 0.7 : 1,
           }}
         >
-          {loading ? 'Activating...' : 'Activate Account'}
+          {exchanging ? 'Preparing…' : loading ? 'Activating...' : 'Activate Account'}
         </button>
       </div>
     </section>
